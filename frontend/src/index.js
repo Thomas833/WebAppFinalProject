@@ -5,9 +5,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Root from './Root';
 import CreatePokemon from './CreatePokemon';
-import LoadPokemon, {PokemonList} from './ListPokemon';
-import LoadSpecificPokemon, { SpecificPokemon } from './SpecificPokemon';
-import LoadBattle, {BattlePokemon} from './BattlePokemon';
+import PokemonList, {LoadPokemon} from './ListPokemon';
+import SpecificPokemon, { LoadSpecificPokemon } from './SpecificPokemon';
+import BattlePokemon, { LoadBattle } from './BattlePokemon';
 import  Win, { LoadWin } from './Win';
 import  Lose, { LoadLose } from './Lose';
 
@@ -15,9 +15,13 @@ import  Lose, { LoadLose } from './Lose';
 
 const router = createBrowserRouter([
   {
-    path:"/",
     element: <Root/>,
     children: [
+      {
+        path: "/",
+        element: <Home />,
+        children: [],
+      },
       {
         path:"/createPokemon",
         element: <CreatePokemon/>,

@@ -3,7 +3,7 @@ import { Router } from "express";
 import { ObjectId } from "mongodb";
 
 
-const PlayerRouter = Router();
+const Router = Router();
 
 PlayerRouter.get("/:pokemonId", async (req,res) =>{
   const db = req.app.get("db");
@@ -31,4 +31,4 @@ PlayerRouter.post("/", async (req, res) => {
 	}
 });
 
-export default PlayerRouter;
+export default Router;
