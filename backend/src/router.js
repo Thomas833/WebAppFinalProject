@@ -6,15 +6,16 @@ const BASE_URL = 'http://localhost:3001';
 const BackendRouter = Router();
 
 // PLAYER POKEMON SECTION
-BackendRouter.get("showPokemonList/:pokemonId", async (req,res) =>{
+BackendRouter.get("/showPokemonList/:pokemonId", async (req,res) =>{
 	const db = req.app.get("db");
 	const pokemon = await db.collection("player").findOne({ _id: new ObjectId(req.params.pokemonId) });
 	return res.json(pokemon);
   });
 
-BackendRouter.post("createPokemon", async (req, res) => {
+BackendRouter.post("/createPokemon", async (req, res) => {
 	const db = req.app.get("db");
 	try {
+		console.log(req.body);
 		const result = await db.collection("player").insertOne(req.body);
 		console.info(result);
 		res.status(201).json(result.insertedId);

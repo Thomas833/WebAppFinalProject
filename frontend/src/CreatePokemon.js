@@ -17,26 +17,25 @@ export default function CreatePokemon() {
 	const [message, setMessage] = useState(initialResultMessage);
 
 	const handleChange = (event) => {
+		console.log(event);
 		const type = event.target.type;
 		switch (type) {
 			case 'text':
-				if (event.target.id === "name"){
 				setFormData({
 					...formData,
 					name: event.target.value,
 				});
-				}
 				break;
 			case 'select':
 				setFormData({
 					...formData,
-					type: event.target.type,
+					type: event.target.value,
 				});
 				break;
 			case 'file':
 				setFormData({
 					...formData,
-					image: event.target.image,
+					image: event.target.value,
 				});
 				break;
 			default:
@@ -67,7 +66,8 @@ export default function CreatePokemon() {
 				<input type="text" id="name" placeholder="name" value={formData.name} onChange={handleChange} />
 				<br/>
 				<label htmlFor="type">Choose a type:</label>
-				<select type="select" name="type" id="type">
+				<select type="select" name="type" id="type" value={formData.type} onChange={handleChange}>
+					<option disabled selected hidden >Choose an option</option>
 					<option value="water">Water</option>
 					<option value="fire">Fire</option>
 					<option value="bug">Bug</option>
@@ -77,7 +77,7 @@ export default function CreatePokemon() {
 					<option value="ground">Ground</option>
 				</select>
 				<br/>
-				<label htmlFor="img">Select image:</label>
+				<label htmlFor="img" onChange={handleChange}>Select image:</label>
   				<input type="file" id="img" name="img" accept="image/*"></input>
 				<br/>
 				<button type="submit">Create</button>
