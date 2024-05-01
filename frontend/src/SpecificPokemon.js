@@ -13,6 +13,7 @@ export default function SpecificPokemon() {
 	return (
 			<article>
                 <h1>{pokemon.name}</h1>
+				<img src={`/images/${pokemon.image}`}/>
                 <p>type: {pokemon.type}</p>
                 <p>wins: {pokemon.wins}</p>
             </article>
