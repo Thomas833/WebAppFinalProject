@@ -7,7 +7,7 @@ async function LoadBattle() {
 
 export default function BattlePokemon() {
 	const pokemon = useLoaderData();
-
+	console.log(pokemon);
 	return (
 			<article>
                 <h1>{pokemon.name}</h1>

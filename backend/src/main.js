@@ -15,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("",BackendRouter);
+app.use(express.static('public'));
 
 const database = await connect();
 app.set("db", database);

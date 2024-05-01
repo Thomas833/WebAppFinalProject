@@ -32,7 +32,13 @@ BackendRouter.post("/createPokemon", async (req, res) => {
 });
 
 // BATTLER POKEMON SECTION
-
+BackendRouter.get("/battlePokemon", async (req,res) =>{
+	const db = req.app.get("db");
+	//console.log(db);
+	const pokemon = await db.collection("battler").aggregate([{ $sample: { size: 1 } }]);
+	//console.log(pokemon._id);
+	return res.json(pokemon);
+});
 
 // POKEMON BATTLE HISTORY SECTION
 

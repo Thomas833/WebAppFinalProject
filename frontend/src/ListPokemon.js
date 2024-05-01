@@ -14,6 +14,7 @@ export default function PokemonList() {
 			{list.map((pokemon) => (
 				<article>
 					<Link to={`/showPokemonList/${pokemon._id}`}><h1>{pokemon.name}</h1></Link>
+					<img src={`/images/${pokemon.image}`}/>
 					<p>{pokemon.type}</p>
 					<p>{pokemon.wins}</p>
 				</article>

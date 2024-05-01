@@ -17,7 +17,6 @@ export default function CreatePokemon() {
 	const [message, setMessage] = useState(initialResultMessage);
 
 	const handleChange = (event) => {
-		//console.log(event);
 		const name = event.target.name;
 		switch (name) {
 			case 'name':
@@ -33,9 +32,12 @@ export default function CreatePokemon() {
 				});
 				break;
 			case 'img':
+				var imagePath = event.target.value;
+				var splitArr = imagePath.split("\\");
+				//console.log(splitArr[splitArr.length -1]);
 				setFormData({
 					...formData,
-					image: event.target.value,
+					image: splitArr[splitArr.length - 1],
 				});
 				break;
 			default:
@@ -57,7 +59,7 @@ export default function CreatePokemon() {
 			return;
 		}
 		setFormData(initialFormData);
-		console.log("reset data");
+		//console.log("reset data");
 	}
 
 	return (
