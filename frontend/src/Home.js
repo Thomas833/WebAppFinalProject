@@ -5,6 +5,8 @@ function Home() {
       <>
         <header>
           <Link to={`/createPokemon`}><h3>Create a Pokemon</h3></Link>
+          <Link to={`/showPokemonList`}><h3>All Your Pokemon</h3></Link>
+          <Link to={`/battlePokemon`}><h3>Battle the Pokemon</h3></Link>
         </header>
         <Outlet />
         <footer>

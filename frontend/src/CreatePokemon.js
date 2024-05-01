@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:3001';
 export default function CreatePokemon() {
 	const initialFormData = {
 		name: '',
-		type:'',
+		type:null,
 		image: null,
 		wins: 0,
 	};
@@ -17,22 +17,22 @@ export default function CreatePokemon() {
 	const [message, setMessage] = useState(initialResultMessage);
 
 	const handleChange = (event) => {
-		console.log(event);
-		const type = event.target.type;
-		switch (type) {
-			case 'text':
+		//console.log(event);
+		const name = event.target.name;
+		switch (name) {
+			case 'name':
 				setFormData({
 					...formData,
 					name: event.target.value,
 				});
 				break;
-			case 'select':
+			case 'type':
 				setFormData({
 					...formData,
 					type: event.target.value,
 				});
 				break;
-			case 'file':
+			case 'img':
 				setFormData({
 					...formData,
 					image: event.target.value,
@@ -57,28 +57,29 @@ export default function CreatePokemon() {
 			return;
 		}
 		setFormData(initialFormData);
+		console.log("reset data");
 	}
 
 	return (
 		<>
 			<form onSubmit={handleSubmit}>
 				<label>Name</label><br />
-				<input type="text" id="name" placeholder="name" value={formData.name} onChange={handleChange} />
+				<input type="text" name="name" id="name" placeholder="name" value={formData.name} onChange={handleChange} />
 				<br/>
 				<label htmlFor="type">Choose a type:</label>
-				<select type="select" name="type" id="type" value={formData.type} onChange={handleChange}>
+				<select type="type" name="type" id="type" onChange={handleChange}>
 					<option disabled selected hidden >Choose an option</option>
-					<option value="water">Water</option>
-					<option value="fire">Fire</option>
-					<option value="bug">Bug</option>
-					<option value="flying">Flying</option>
-					<option value="normal">Normal</option>
-					<option value="electric">Electric</option>
-					<option value="ground">Ground</option>
+					<option value="Water">Water</option>
+					<option value="Fire">Fire</option>
+					<option value="Bug">Bug</option>
+					<option value="Flying">Flying</option>
+					<option value="Normal">Normal</option>
+					<option value="Electric">Electric</option>
+					<option value="Ground">Ground</option>
 				</select>
 				<br/>
-				<label htmlFor="img" onChange={handleChange}>Select image:</label>
-  				<input type="file" id="img" name="img" accept="image/*"></input>
+				<label htmlFor="img">Select image:</label>
+  				<input type="file" id="img" name="img" accept="image/*" onChange={handleChange}></input>
 				<br/>
 				<button type="submit">Create</button>
 			</form>
