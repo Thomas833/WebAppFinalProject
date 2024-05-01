@@ -1,10 +1,10 @@
 import { useState } from "react"
 const BASE_URL = 'http://localhost:3001';
-
 export default function CreatePokemon() {
 	const initialFormData = {
 		name: '',
 		type:'',
+		image: null,
 		wins: 0,
 	};
 
@@ -20,17 +20,24 @@ export default function CreatePokemon() {
 		const type = event.target.type;
 		switch (type) {
 			case 'text':
-				if (event.target.id === "type"){
-					setFormData({
-						...formData,
-						type:event.target.value,
-					});
-				} else if (event.target.id === "name"){
+				if (event.target.id === "name"){
 				setFormData({
 					...formData,
 					name: event.target.value,
 				});
 				}
+				break;
+			case 'select':
+				setFormData({
+					...formData,
+					type: event.target.type,
+				});
+				break;
+			case 'file':
+				setFormData({
+					...formData,
+					image: event.target.image,
+				});
 				break;
 			default:
 				return;
@@ -39,7 +46,6 @@ export default function CreatePokemon() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		// TODO: Let's fill this in together
 		const result = await fetch(`${BASE_URL}/createPokemon`, {
 			method: "POST",
 			headers: {
@@ -60,8 +66,8 @@ export default function CreatePokemon() {
 				<label>Name</label><br />
 				<input type="text" id="name" placeholder="name" value={formData.name} onChange={handleChange} />
 				<br/>
-				<label for="type">Choose a type:</label>
-				<select name="type" id="type">
+				<label htmlFor="type">Choose a type:</label>
+				<select type="select" name="type" id="type">
 					<option value="water">Water</option>
 					<option value="fire">Fire</option>
 					<option value="bug">Bug</option>
@@ -71,7 +77,7 @@ export default function CreatePokemon() {
 					<option value="ground">Ground</option>
 				</select>
 				<br/>
-				<label for="img">Select image:</label>
+				<label htmlFor="img">Select image:</label>
   				<input type="file" id="img" name="img" accept="image/*"></input>
 				<br/>
 				<button type="submit">Create</button>

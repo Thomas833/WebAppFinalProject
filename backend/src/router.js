@@ -2,27 +2,20 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb";
 
+const BASE_URL = 'http://localhost:3001';
+const BackendRouter = Router();
 
-const Router = Router();
-
-PlayerRouter.get("/:pokemonId", async (req,res) =>{
-  const db = req.app.get("db");
-  const pokemon = await db.collection("player").findOne({ _id: new ObjectId(req.params.pokemonId) });
-  return res.json(pokemon);
-});
-
-PlayerRouter.get("/", async (req,res) =>{ // for the route /project/:projectId/todo
-  const db = req.app.get("db");
-  const pokemonList = await db.collection("player").find({project_i: new ObjectId(req.params.projectId)}).toArray();
-  return res.json(pokemonList);
-});
-
-PlayerRouter.post("/", async (req, res) => {
+// PLAYER POKEMON SECTION
+BackendRouter.get("showPokemonList/:pokemonId", async (req,res) =>{
 	const db = req.app.get("db");
-  req.body.project_id = new ObjectId(req.params.projectId);
+	const pokemon = await db.collection("player").findOne({ _id: new ObjectId(req.params.pokemonId) });
+	return res.json(pokemon);
+  });
 
+BackendRouter.post("createPokemon", async (req, res) => {
+	const db = req.app.get("db");
 	try {
-		const result = await db.collection("todos").insertOne(req.body);
+		const result = await db.collection("player").insertOne(req.body);
 		console.info(result);
 		res.status(201).json(result.insertedId);
 	} catch (e) {
@@ -31,4 +24,16 @@ PlayerRouter.post("/", async (req, res) => {
 	}
 });
 
-export default Router;
+// BATTLER POKEMON SECTION
+
+
+// POKEMON BATTLE HISTORY SECTION
+
+/*
+Router.get("/", async (req,res) =>{ // for the route /project/:projectId/todo
+  const db = req.app.get("db");
+  const pokemonList = await db.collection("player").find({project_i: new ObjectId(req.params.projectId)}).toArray();
+  return res.json(pokemonList);
+});
+*/
+export default BackendRouter;

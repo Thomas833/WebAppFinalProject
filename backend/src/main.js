@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import cors from "cors";
 import {MongoClient} from "mongodb";
-import Router from "./router";
+import BackendRouter from "./router.js";
 
 
 async function connect(){
@@ -14,7 +14,7 @@ const port = 3001;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/",Router);
+app.use("/",BackendRouter);
 
 const database = await connect();
 app.set("db", database);
