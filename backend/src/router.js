@@ -35,7 +35,8 @@ BackendRouter.post("/createPokemon", async (req, res) => {
 BackendRouter.get("/battlePokemon", async (req,res) =>{
 	const db = req.app.get("db");
 	//console.log(db);
-	const pokemonCursor = await db.collection("battler").aggregate([{ $sample: { size: 1 } }]);
+	const pokemonCursor = await db.collection("player").aggregate([{ $sample: { size: 1 } }]);
+
 	return res.json(await pokemonCursor.next());
 });
 
