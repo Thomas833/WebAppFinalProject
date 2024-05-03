@@ -108,7 +108,7 @@ export default function BattlePokemon() {
 			<article>
                 <h1>{pokemon.name}</h1>
                 <p>type: {pokemon.type}</p>
-                <p>winner: {pokemon.winner}</p>
+                <p>winner: {formData.winner}</p>
 
 				<form onSubmit={handleSubmit}>
 				<label>Choose a Pokemon to Battle</label><br />

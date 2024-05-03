@@ -48,7 +48,7 @@ BackendRouter.post("/battlePokemon", async (req,res) =>{
 	const result = await db.collection("battleInfo").insertOne(req.body);
 	console.info(result);
 
-	return winOutcome;
+	return req.body;
 });
 
 // POKEMON BATTLE HISTORY SECTION
