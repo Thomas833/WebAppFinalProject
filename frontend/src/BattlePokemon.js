@@ -16,7 +16,9 @@ export default function BattlePokemon() {
 		name: '',
 		type:null,
 		image: null,
-		wins: 0,
+		battleName: '',
+		winner: '',
+
 	};
 
 	const initialResultMessage = {
@@ -40,12 +42,12 @@ export default function BattlePokemon() {
       });
 	  }, []);
 
-	  console.log(allPokemon);
+	//   console.log(allPokemon);
 
 
 
 	const pokemon = useLoaderData();
-	console.log(pokemon);
+	// console.log(pokemon);
 
 	const handleChange = (event) => {
 		const name = event.target.name;
@@ -53,7 +55,7 @@ export default function BattlePokemon() {
 			case 'name':
 				setFormData({
 					...formData,
-					name: event.target.value,
+					name: event.target.name,
 				});
 				break;
 			case 'type':
@@ -62,13 +64,11 @@ export default function BattlePokemon() {
 					type: event.target.value,
 				});
 				break;
-			case 'img':
-				var imagePath = event.target.value;
-				var splitArr = imagePath.split("\\");
-				//console.log(splitArr[splitArr.length -1]);
+
+			case 'battle':
 				setFormData({
 					...formData,
-					image: splitArr[splitArr.length - 1],
+					battleName: event.target.value,
 				});
 				break;
 			default:
@@ -78,7 +78,17 @@ export default function BattlePokemon() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const result = await fetch(`${BASE_URL}/createPokemon`, {
+		const winOutcome = (Math.round(Math.random()));
+		const split = formData.type.split(" ")[0];
+		const battlers = [split, pokemon.name];
+
+		setFormData({
+			...formData,
+			winner: battlers[winOutcome],
+		});
+
+		console.log(formData.winner);
+		const result = await fetch(`${BASE_URL}/battlePokemon`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -86,7 +96,7 @@ export default function BattlePokemon() {
 			body: JSON.stringify(formData),
 		});
 		if (result.status !== 201) {
-			setMessage({ msg: "Failed to create...", newId: null });
+			setMessage({ msg: "Failed to battle...", newId: null });
 			return;
 		}
 		setFormData(initialFormData);
@@ -98,7 +108,7 @@ export default function BattlePokemon() {
 			<article>
                 <h1>{pokemon.name}</h1>
                 <p>type: {pokemon.type}</p>
-                <p>wins: {pokemon.wins}</p>
+                <p>winner: {pokemon.winner}</p>
 
 				<form onSubmit={handleSubmit}>
 				<label>Choose a Pokemon to Battle</label><br />
@@ -115,12 +125,12 @@ export default function BattlePokemon() {
 					<option value="Ground">Ground</option> */}
 
 				{allPokemon.map((poke) => (
-					<option value={`${poke.name}`}>{`${poke.name}`}</option>
+					<option value={`${poke.name} vs ${pokemon.name}`} name={`${poke.name}`}>{`${poke.name}`}</option>
 					// <article>
 					// 	<Link to={`/showPokemonList/${pokemon._id}`}><h1>{pokemon.name}</h1></Link>
 					// 	<img src={`/images/${pokemon.image}`}/>
 					// 	<p>{pokemon.type}</p>
-					// 	<p>{pokemon.wins}</p>
+					// 	<p>{pokemon.winner}</p>
 					// </article>
 				))}
 				</select>
