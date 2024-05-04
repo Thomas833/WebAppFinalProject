@@ -1,5 +1,9 @@
-import { useState } from "react"
+import { useState } from "react";
+
 const BASE_URL = 'http://localhost:3001';
+const imageArr = ["images/001-bulbasaur.png", "images/002-ivysaur.png"];
+
+
 export default function CreatePokemon() {
 	const initialFormData = {
 		name: '',
@@ -37,7 +41,7 @@ export default function CreatePokemon() {
 				//console.log(splitArr[splitArr.length -1]);
 				setFormData({
 					...formData,
-					image: splitArr[splitArr.length - 1],
+					image: event.target.value,
 				});
 				break;
 			default:
@@ -81,7 +85,11 @@ export default function CreatePokemon() {
 				</select>
 				<br/>
 				<label htmlFor="img">Select image:</label>
-  				<input type="file" id="img" name="img" accept="image/*" onChange={handleChange}></input>
+				<select>
+					{imageArr.forEach((image,i) => {
+						
+					})}
+				</select>
 				<br/>
 				<button type="submit">Create</button>
 			</form>

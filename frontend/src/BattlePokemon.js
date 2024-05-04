@@ -15,7 +15,8 @@ export default function BattlePokemon() {
 	const initialFormData = {
 		battleName: '',
 		winner: '',
-		winnerId: null,
+		playerId: null,
+		opponentId: null,
 
 	};
 
@@ -43,7 +44,6 @@ export default function BattlePokemon() {
 
 
 	const pokemon = useLoaderData();
-
 	const handleChange = (event) => {
 		const name = event.target.name;
 		switch (name) {
@@ -51,7 +51,8 @@ export default function BattlePokemon() {
 				setFormData({
 					...formData,
 					battleName: event.target.value,
-					winnerId: event.target[1].id,
+					playerId: event.target[1].id,
+					opponentId: pokemon._id,
 				});
 				break;	
 			default:
@@ -88,7 +89,7 @@ export default function BattlePokemon() {
 				<h1>Your opponent:</h1>
                 <h1>{pokemon.name}</h1>
                 <p>type: {pokemon.type}</p>
-                <p>winner: {formData.winner}</p>
+                <p>wins: {pokemon.wins}</p>
 				<p>----------------------------</p>
 				<form onSubmit={handleSubmit}>
 				<label>Choose a Pokemon to Battle</label><br />
