@@ -46,7 +46,7 @@ BackendRouter.get("/battlePokemon", async (req,res) =>{
 BackendRouter.post("/battlePokemon", async (req,res) =>{
 	const db = req.app.get("db");
 	const newId = new ObjectId();
-	console.log(req.body.battleName);
+	//console.log(req.body.battleName);
 	const result = await db.collection("battles").insertOne({_id: newId, battleName: req.body.battleName, winner: req.body.winner, winnerId: req.body.winnerId});
 	//const result = await db.collection("battles").insertOne(req.body);
 
