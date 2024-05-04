@@ -35,29 +35,35 @@ BackendRouter.post("/createPokemon", async (req, res) => {
 BackendRouter.get("/battlePokemon", async (req,res) =>{
 	const db = req.app.get("db");
 	//console.log(db);
-	const pokemonCursor = await db.collection("player").aggregate([{ $sample: { size: 1 } }]);
+	const pokemonCursor = await db.collection("battler").aggregate([{ $sample: { size: 1 } }]);
 
 	return res.json(await pokemonCursor.next());
 });
 
-BackendRouter.post("/battlePokemon", async (req,res) =>{
-	const db = req.app.get("db");
-
-	// req.body.wins += (1);
-	console.log(req.body);
-	const result = await db.collection("battleInfo").insertOne(req.body);
-	console.info(result);
-
-	return winOutcome;
-});
 
 // POKEMON BATTLE HISTORY SECTION
 
-/*
-Router.get("/", async (req,res) =>{ // for the route /project/:projectId/todo
-  const db = req.app.get("db");
-  const pokemonList = await db.collection("player").find({project_i: new ObjectId(req.params.projectId)}).toArray();
-  return res.json(pokemonList);
+BackendRouter.post("/battlePokemon", async (req,res) =>{
+	const db = req.app.get("db");
+	const newId = new ObjectId();
+	console.log(req.body.battleName);
+	const result = await db.collection("battles").insertOne({_id: newId, battleName: req.body.battleName, winner: req.body.winner, winnerId: req.body.winnerId});
+	//const result = await db.collection("battles").insertOne(req.body);
+
+	return result;
 });
-*/
+
+
+BackendRouter.put("/battlePokemon", async (req, res) => {
+	const db = req.app.get("db");
+	const findResult = await db.collection("battler").findOne({_id: ObjectId(req.params.winnerId)});
+	const updateResult = null;
+	if (findResult == null){
+		updateResult = await db.collection("player").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+	} else {
+		updateResult = await db.collection("battler").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+	}
+	return updateResult;
+});
+
 export default BackendRouter;

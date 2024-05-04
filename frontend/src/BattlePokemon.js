@@ -1,9 +1,9 @@
-import { useLoaderData } from "react-router-dom";
-import { useState, useEffect } from "react"
+import { redirect, useLoaderData } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const BASE_URL = 'http://localhost:3001';
 
-async function LoadBattle() {
+async function LoadBattlePokemon() {
 	const response = await fetch(`http://localhost:3001/battlePokemon`);
 
 	return await response.json();
@@ -13,11 +13,9 @@ async function LoadBattle() {
 export default function BattlePokemon() {
 
 	const initialFormData = {
-		name: '',
-		type:null,
-		image: null,
 		battleName: '',
 		winner: '',
+		winnerId: null,
 
 	};
 
@@ -42,35 +40,20 @@ export default function BattlePokemon() {
       });
 	  }, []);
 
-	//   console.log(allPokemon);
-
 
 
 	const pokemon = useLoaderData();
-	// console.log(pokemon);
 
 	const handleChange = (event) => {
 		const name = event.target.name;
 		switch (name) {
-			case 'name':
-				setFormData({
-					...formData,
-					name: event.target.name,
-				});
-				break;
-			case 'type':
-				setFormData({
-					...formData,
-					type: event.target.value,
-				});
-				break;
-
-			case 'battle':
+			case 'battleName':
 				setFormData({
 					...formData,
 					battleName: event.target.value,
+					winnerId: event.target[1].id,
 				});
-				break;
+				break;	
 			default:
 				return;
 		}
@@ -79,14 +62,14 @@ export default function BattlePokemon() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const winOutcome = (Math.round(Math.random()));
-		const split = formData.type.split(" ")[0];
-		const battlers = [split, pokemon.name];
+		const firstPokemon = formData.battleName.split(" ")[0];
+		const battlers = [firstPokemon, pokemon.name];
 
 		setFormData({
 			...formData,
 			winner: battlers[winOutcome],
 		});
-
+		
 		console.log(formData.winner);
 		const result = await fetch(`${BASE_URL}/battlePokemon`, {
 			method: "POST",
@@ -95,43 +78,26 @@ export default function BattlePokemon() {
 			},
 			body: JSON.stringify(formData),
 		});
-		if (result.status !== 201) {
-			setMessage({ msg: "Failed to battle...", newId: null });
-			return;
-		}
+		//console.log(result);
 		setFormData(initialFormData);
-		//console.log("reset data");
-	}
+	}	
 
 
 	return (
 			<article>
+				<h1>Your opponent:</h1>
                 <h1>{pokemon.name}</h1>
                 <p>type: {pokemon.type}</p>
-                <p>winner: {pokemon.winner}</p>
-
+                <p>winner: {formData.winner}</p>
+				<p>----------------------------</p>
 				<form onSubmit={handleSubmit}>
 				<label>Choose a Pokemon to Battle</label><br />
-				<select type="type" name="type" id="type" onChange={handleChange}>
+				<select type="type" name="battleName" id="type" onChange={handleChange}>
 
 					<option disabled selected hidden >Choose an option</option>
 
-
-					{/* <option value="Fire">Fire</option>
-					<option value="Bug">Bug</option>
-					<option value="Flying">Flying</option>
-					<option value="Normal">Normal</option>
-					<option value="Electric">Electric</option>
-					<option value="Ground">Ground</option> */}
-
 				{allPokemon.map((poke) => (
-					<option value={`${poke.name} vs ${pokemon.name}`} name={`${poke.name}`}>{`${poke.name}`}</option>
-					// <article>
-					// 	<Link to={`/showPokemonList/${pokemon._id}`}><h1>{pokemon.name}</h1></Link>
-					// 	<img src={`/images/${pokemon.image}`}/>
-					// 	<p>{pokemon.type}</p>
-					// 	<p>{pokemon.winner}</p>
-					// </article>
+					<option id={`${poke._id}`} value={`${poke.name} vs ${pokemon.name}`} name={`${poke.name}`}>{`${poke.name}`}</option>
 				))}
 				</select>
 
@@ -144,4 +110,4 @@ export default function BattlePokemon() {
 	);
 }
 
-export { LoadBattle };
+export { LoadBattlePokemon };

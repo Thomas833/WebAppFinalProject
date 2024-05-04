@@ -15,8 +15,8 @@ export default function PokemonList() {
 				<article>
 					<Link to={`/showPokemonList/${pokemon._id}`}><h1>{pokemon.name}</h1></Link>
 					<img src={`/images/${pokemon.image}`}/>
-					<p>{pokemon.type}</p>
-					<p>{pokemon.wins}</p>
+					<p>Type: {pokemon.type}</p>
+					<p>Wins: {pokemon.wins}</p>
 				</article>
 			))}
 		</>

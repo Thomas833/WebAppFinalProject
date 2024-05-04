@@ -7,7 +7,7 @@ import Root from './Root';
 import CreatePokemon from './CreatePokemon';
 import PokemonList, {LoadPokemon} from './ListPokemon';
 import SpecificPokemon, { LoadSpecificPokemon } from './SpecificPokemon';
-import BattlePokemon, { LoadBattle } from './BattlePokemon';
+import BattlePokemon, { LoadBattlePokemon } from './BattlePokemon';
 import  Win, { LoadWin } from './Win';
 import  Lose, { LoadLose } from './Lose';
 import Home from './Home';
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       {
         path:"/battlePokemon",
         element: <BattlePokemon />,
-        loader: LoadBattle,
+        loader: LoadBattlePokemon,
         children:[
           {
             path:":battleId/lose",
