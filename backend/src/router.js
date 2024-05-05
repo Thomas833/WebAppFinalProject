@@ -1,9 +1,14 @@
 
 import { Router } from "express";
 import { ObjectId } from "mongodb";
+import * as fs from "node:fs/promises";
 
 const BASE_URL = 'http://localhost:3001';
 const BackendRouter = Router();
+
+
+// IMAGE SECTION
+
 
 // PLAYER POKEMON SECTION
 BackendRouter.get("/showPokemonList", async (req,res) =>{
@@ -31,6 +36,15 @@ BackendRouter.post("/createPokemon", async (req, res) => {
 	}
 });
 
+BackendRouter.get("/createPokemon", async (req,res) =>{
+	const pokemonFiles = await fs.readdir("images/");
+	const pokemonList = pokemonFiles.map((file) => {
+		return file;
+	});
+	//console.log(pokemonList);
+	return res.json(pokemonList);
+});
+
 // BATTLER POKEMON SECTION
 BackendRouter.get("/battlePokemon", async (req,res) =>{
 	const db = req.app.get("db");
@@ -45,25 +59,36 @@ BackendRouter.get("/battlePokemon", async (req,res) =>{
 
 BackendRouter.post("/battlePokemon", async (req,res) =>{
 	const db = req.app.get("db");
-	const newId = new ObjectId();
-	//console.log(req.body.battleName);
-	const result = await db.collection("battles").insertOne({_id: newId, battleName: req.body.battleName, winner: req.body.winner, playerId: new ObjectId(req.body.playerId), opponentId: new ObjectId(req.body.opponentId)});
-	//const result = await db.collection("battles").insertOne(req.body);
+	//const newId = new ObjectId();
+	//const result = await db.collection("battles").insertOne({_id: newId, battleName: req.body.battleName, winner: req.body.winner, playerId: new ObjectId(req.body.playerId), opponentId: new ObjectId(req.body.opponentId)});
+	const result = await db.collection("battles").insertOne(req.body);
+	const findResult = await db.collection("battler").findOne({_id: new ObjectId(req.params.playerId)});
+	var updateResult = null;
+	if (findResult == null){
+		updateResult = await db.collection("player").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+	} else {
+		updateResult = await db.collection("battler").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+	}
 
-	return result;
+	return res.json(result.insertedId);
 });
-
 
 BackendRouter.put("/battlePokemon", async (req, res) => {
 	const db = req.app.get("db");
-	const findResult = await db.collection("battler").findOne({_id: ObjectId(req.params.winnerId)});
-	const updateResult = null;
+	const findResult = await db.collection("battler").findOne({_id: new ObjectId(req.params.winnerId)});
+	var updateResult = null;
 	if (findResult == null){
 		updateResult = await db.collection("player").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
 	} else {
 		updateResult = await db.collection("battler").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
 	}
 	return updateResult;
+});
+
+BackendRouter.get("/battlePokemon/:battleId", async (req, res) => {
+	const db = req.app.get("db");
+	const result = await db.collection("battles").findOne({_id: req.params.battleId});
+	return result;
 });
 
 export default BackendRouter;

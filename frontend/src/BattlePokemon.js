@@ -1,4 +1,4 @@
-import { redirect, useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const BASE_URL = 'http://localhost:3001';
@@ -60,6 +60,8 @@ export default function BattlePokemon() {
 		}
 	};
 
+	const navigate = useNavigate();
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const winOutcome = (Math.round(Math.random()));
@@ -70,17 +72,29 @@ export default function BattlePokemon() {
 			...formData,
 			winner: battlers[winOutcome],
 		});
-		
-		console.log(formData.winner);
+
+
 		const result = await fetch(`${BASE_URL}/battlePokemon`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(formData),
+			body: JSON.stringify({
+				...formData,
+				winner: battlers[winOutcome],
+			}),
 		});
-		//console.log(result);
+
+		const battleId = await result.json();
+
 		setFormData(initialFormData);
+		if (winOutcome === 1){
+			console.log("lose");
+			navigate(`/battlePokemon/${battleId}/lose`);
+		} else {
+			console.log("win");
+			navigate(`/battlePokemon/${battleId}/win`);
+		}
 	}	
 
 

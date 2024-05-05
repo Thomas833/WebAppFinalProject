@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
 const BASE_URL = 'http://localhost:3001';
-const imageArr = ["images/001-bulbasaur.png", "images/002-ivysaur.png"];
+//const imageArr = ["images/001-bulbasaur.png", "images/002-ivysaur.png"];
+const images = await LoadImages();
 
 
 export default function CreatePokemon() {
@@ -66,6 +68,7 @@ export default function CreatePokemon() {
 		//console.log("reset data");
 	}
 
+
 	return (
 		<>
 			<form onSubmit={handleSubmit}>
@@ -84,10 +87,11 @@ export default function CreatePokemon() {
 					<option value="Ground">Ground</option>
 				</select>
 				<br/>
-				<label htmlFor="img">Select image:</label>
+				<label htmlFor="img">Image:</label>
 				<select>
-					{imageArr.forEach((image,i) => {
-						
+					<option disabled selected hidden >Choose an Image</option>
+					{images.map((image) =>{
+						<option><img src={`${image}`}></img>image</option>
 					})}
 				</select>
 				<br/>
@@ -95,4 +99,15 @@ export default function CreatePokemon() {
 			</form>
 		</>
 	)
+}
+
+
+async function LoadImages() {
+	const result = await fetch(`${BASE_URL}/createPokemon`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	return await result.json();
 }
