@@ -3,10 +3,12 @@ import { useLoaderData } from "react-router-dom";
 
 const BASE_URL = 'http://localhost:3001';
 //const imageArr = ["images/001-bulbasaur.png", "images/002-ivysaur.png"];
-const images = await LoadImages();
 
 
 export default function CreatePokemon() {
+
+	const images = useLoaderData();
+
 	const initialFormData = {
 		name: '',
 		type:null,
@@ -90,9 +92,9 @@ export default function CreatePokemon() {
 				<label htmlFor="img">Image:</label>
 				<select>
 					<option disabled selected hidden >Choose an Image</option>
-					{images.map((image) =>{
-						<option><img src={`${image}`}></img>image</option>
-					})}
+					{images.map((image) =>(
+						<option>{image}</option>
+					))}
 				</select>
 				<br/>
 				<button type="submit">Create</button>
@@ -102,7 +104,7 @@ export default function CreatePokemon() {
 }
 
 
-async function LoadImages() {
+export async function LoadImages() {
 	const result = await fetch(`${BASE_URL}/createPokemon`, {
 		method: "GET",
 		headers: {

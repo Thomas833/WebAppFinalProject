@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Root from './Root';
-import CreatePokemon from './CreatePokemon';
+import CreatePokemon, {LoadImages} from './CreatePokemon';
 import PokemonList, {LoadPokemon} from './ListPokemon';
 import SpecificPokemon, { LoadSpecificPokemon } from './SpecificPokemon';
 import BattlePokemon, { LoadBattlePokemon } from './BattlePokemon';
@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       {
         path:"/createPokemon",
         element: <CreatePokemon/>,
+        loader: LoadImages,
       },
       {
         path:"/showPokemonList",

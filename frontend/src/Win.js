@@ -10,9 +10,8 @@ export default function Win() {
 
 	return (
 			<article>
-                <h1>{battle.name}</h1>
-                <p>type: {battle.type}</p>
-                <p>wins: {battle.wins}</p>
+                <h1>{battle.battleName}</h1>
+                <p>winner: {battle.winner}</p>
             </article>
 	);
 }

@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const BASE_URL = 'http://localhost:3001';
@@ -12,6 +12,7 @@ async function LoadBattlePokemon() {
 
 export default function BattlePokemon() {
 
+	const navigate = useNavigate();
 	const initialFormData = {
 		battleName: '',
 		winner: '',
@@ -27,6 +28,7 @@ export default function BattlePokemon() {
 	// INFO: Rather than use separate hooks, let's jam the state together
 	const [formData, setFormData] = useState(initialFormData);
 	const [message, setMessage] = useState(initialResultMessage);
+	const [battleOutcome, setBattleOutcome] = useState({id: null, result: ''});
 	const [allPokemon, setAllPokemon] = useState([]);
 
 	useEffect(() => {
@@ -60,21 +62,13 @@ export default function BattlePokemon() {
 		}
 	};
 
-	const navigate = useNavigate();
-
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const winOutcome = (Math.round(Math.random()));
 		const firstPokemon = formData.battleName.split(" ")[0];
 		const battlers = [firstPokemon, pokemon.name];
 
-		setFormData({
-			...formData,
-			winner: battlers[winOutcome],
-		});
-
-
-		const result = await fetch(`${BASE_URL}/battlePokemon`, {
+		fetch(`${BASE_URL}/battlePokemon`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -83,19 +77,19 @@ export default function BattlePokemon() {
 				...formData,
 				winner: battlers[winOutcome],
 			}),
+		})
+		.then((result) => result.json())
+		.then((battleId) => {
+			let outcome;
+			if (winOutcome === 1){
+				outcome = "lose";
+			} else {
+				outcome = "win";
+			}
+
+			navigate(`${battleId}/${outcome}`, {replace: true});
 		});
-
-		const battleId = await result.json();
-
-		setFormData(initialFormData);
-		if (winOutcome === 1){
-			console.log("lose");
-			navigate(`/battlePokemon/${battleId}/lose`);
-		} else {
-			console.log("win");
-			navigate(`/battlePokemon/${battleId}/win`);
-		}
-	}	
+	}
 
 
 	return (
@@ -109,7 +103,7 @@ export default function BattlePokemon() {
 				<label>Choose a Pokemon to Battle</label><br />
 				<select type="type" name="battleName" id="type" onChange={handleChange}>
 
-					<option disabled selected hidden >Choose an option</option>
+					<option disabled hidden selected >Choose an option</option>
 
 				{allPokemon.map((poke) => (
 					<option id={`${poke._id}`} value={`${poke.name} vs ${pokemon.name}`} name={`${poke.name}`}>{`${poke.name}`}</option>
@@ -118,10 +112,8 @@ export default function BattlePokemon() {
 
 				<button type="submit">Battle</button>
 			</form>
-
+			<Outlet />
             </article>
-
-
 	);
 }
 

@@ -62,33 +62,24 @@ BackendRouter.post("/battlePokemon", async (req,res) =>{
 	//const newId = new ObjectId();
 	//const result = await db.collection("battles").insertOne({_id: newId, battleName: req.body.battleName, winner: req.body.winner, playerId: new ObjectId(req.body.playerId), opponentId: new ObjectId(req.body.opponentId)});
 	const result = await db.collection("battles").insertOne(req.body);
-	const findResult = await db.collection("battler").findOne({_id: new ObjectId(req.params.playerId)});
-	var updateResult = null;
+	const findResult = await db.collection("battler").findOne({name: req.body.winner});
+	let updateResult;
+	console.log(findResult);
 	if (findResult == null){
-		updateResult = await db.collection("player").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+		updateResult = await db.collection("player").updateOne({ name: req.body.winner}, {$inc: {wins:1}});
+		console.log(updateResult);
 	} else {
-		updateResult = await db.collection("battler").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
+		updateResult = await db.collection("battler").updateOne({ name: req.body.winner}, {$inc: {wins:1}});
+		console.log(updateResult);
 	}
 
 	return res.json(result.insertedId);
 });
 
-BackendRouter.put("/battlePokemon", async (req, res) => {
-	const db = req.app.get("db");
-	const findResult = await db.collection("battler").findOne({_id: new ObjectId(req.params.winnerId)});
-	var updateResult = null;
-	if (findResult == null){
-		updateResult = await db.collection("player").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
-	} else {
-		updateResult = await db.collection("battler").updateOne({ name: req.params.winner}, {$inc: {wins:1}});
-	}
-	return updateResult;
-});
-
 BackendRouter.get("/battlePokemon/:battleId", async (req, res) => {
 	const db = req.app.get("db");
-	const result = await db.collection("battles").findOne({_id: req.params.battleId});
-	return result;
+	const result = await db.collection("battles").findOne({_id: new ObjectId(req.params.battleId)});
+	return res.json(result);
 });
 
 export default BackendRouter;
