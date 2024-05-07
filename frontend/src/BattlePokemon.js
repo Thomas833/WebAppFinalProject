@@ -112,7 +112,6 @@ export default function BattlePokemon() {
 
 				<button type="submit">Battle</button>
 			</form>
-			<Outlet />
             </article>
 	);
 }

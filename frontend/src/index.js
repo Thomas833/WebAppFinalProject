@@ -41,18 +41,16 @@ const router = createBrowserRouter([
         path:"/battlePokemon",
         element: <BattlePokemon />,
         loader: LoadBattlePokemon,
-        children:[
-          {
-            path:":battleId/lose",
-            elememt: <Lose />,
-            loader: LoadLose,
-          },
-          {
-            path: ":battleId/win",
-            element: <Win />,
-            loader: LoadWin,
-          }
-        ]
+      },
+      {
+        path:"/battlePokemon/:battleId/lose",
+        elememt: <Lose />,
+        loader: LoadLose,
+      },
+      {
+        path: "/battlePokemon/:battleId/win",
+        element: <Win />,
+        loader: LoadWin,
       }
     ]
   }
