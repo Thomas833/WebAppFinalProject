@@ -15,7 +15,7 @@ export default function BattlePokemon() {
     winner: '',
     playerId: null,
     opponentId: null,
-    image: '',
+    winImage: '',
   };
 
   const initialResultMessage = {
@@ -35,10 +35,11 @@ export default function BattlePokemon() {
   }, []);
 
   const pokemon = useLoaderData();
-  const ourPokemonImage = '';
+  const winningImage = ''
 
   const handleChange = (event) => {
     const name = event.target.name;
+     winningImage = event.target.image; // maybe different?
     switch (name) {
       case 'battleName':
         setFormData({
@@ -46,7 +47,6 @@ export default function BattlePokemon() {
           battleName: event.target.value,
           playerId: event.target[1].id,
           opponentId: pokemon._id,
-          image: event.target.name,
         });
 
         break;
@@ -64,13 +64,13 @@ export default function BattlePokemon() {
     if (winOutcome == 1){
       setFormData({
         ...formData,
-        image: pokemon.image,
+        winImage: pokemon.image,
       });
     }
     else{
       setFormData({
         ...formData,
-        image: pokemon.image,
+        winImage: winningImage,
       });
     }
     fetch(`${BASE_URL}/battlePokemon`, {
