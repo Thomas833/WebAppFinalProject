@@ -27,6 +27,7 @@ export default function Win() {
   return (
     <div style={pageStyle.body}>
       <article>
+      <img src={require(`./images/${battle.image}`)} style={pageStyle.img} alt={battle.battleName} />
         <h1 style={pageStyle.h1}>{battle.battleName}</h1>
         <p style={pageStyle.p}>Winner: {battle.winner}</p>
       </article>

@@ -27,6 +27,8 @@ export default function Lose() {
   return (
     <div style={pageStyle.body}>
       <article>
+      <img src={require(`./images/${battle.image}`)} style={pageStyle.img} alt={battle.battleName} />
+
         <h1 style={pageStyle.h1}>{battle.battleName}</h1>
         <p style={pageStyle.p}>Type: {battle.type}</p>
         <p style={pageStyle.p}>Wins: {battle.wins}</p>

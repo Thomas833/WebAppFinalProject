@@ -15,6 +15,7 @@ export default function BattlePokemon() {
     winner: '',
     playerId: null,
     opponentId: null,
+    image: '',
   };
 
   const initialResultMessage = {
@@ -34,6 +35,7 @@ export default function BattlePokemon() {
   }, []);
 
   const pokemon = useLoaderData();
+  const ourPokemonImage = '';
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -44,7 +46,9 @@ export default function BattlePokemon() {
           battleName: event.target.value,
           playerId: event.target[1].id,
           opponentId: pokemon._id,
+          image: event.target.name,
         });
+
         break;
       default:
         return;
@@ -57,6 +61,18 @@ export default function BattlePokemon() {
     const firstPokemon = formData.battleName.split(" ")[0];
     const battlers = [firstPokemon, pokemon.name];
 
+    if (winOutcome == 1){
+      setFormData({
+        ...formData,
+        image: pokemon.image,
+      });
+    }
+    else{
+      setFormData({
+        ...formData,
+        image: pokemon.image,
+      });
+    }
     fetch(`${BASE_URL}/battlePokemon`, {
       method: "POST",
       headers: {
