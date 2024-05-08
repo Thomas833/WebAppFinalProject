@@ -154,7 +154,7 @@ export default function BattlePokemon() {
           <select style={pageStyle.select} type="type" name="battleName" id="type" onChange={handleChange}>
             <option disabled hidden selected>Choose an option</option>
             {allPokemon.map((poke) => (
-              <option key={poke._id} id={poke._id} value={`${poke.name} vs ${pokemon.name}`} name={poke.name}>{poke.name}</option>
+              <option key={poke._id} id={poke._id} value={`${poke.name} vs ${pokemon.name}`} name={poke.image}>{poke.name}</option>
             ))}
           </select>
           <button style={pageStyle.button} type="submit">Battle</button>
