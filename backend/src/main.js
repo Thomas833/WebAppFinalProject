@@ -12,15 +12,19 @@ async function connect(){
 const port = 3001;
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use("",BackendRouter);
-app.use(express.static('public'));
+app.use('/static', express.static('public'))
+
+
+
 
 const database = await connect();
 app.set("db", database);
 
-// database.dropDatabase()
+database.dropDatabase()
 
 app.listen(port, () => {
   console.info(`Server is running at http://localhost:${port}`);

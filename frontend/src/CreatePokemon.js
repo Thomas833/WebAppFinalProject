@@ -29,12 +29,14 @@ export default function CreatePokemon() {
 		const name = event.target.name;
 		switch (name) {
 			case 'name':
+				console.log("IMAGE", event.target.value);
 				setFormData({
 					...formData,
 					name: event.target.value,
 				});
 				break;
 			case 'type':
+				console.log("IMAGE", event.target.value);
 				setFormData({
 					...formData,
 					type: event.target.value,
@@ -44,6 +46,7 @@ export default function CreatePokemon() {
 				var imagePath = event.target.value;
 				var splitArr = imagePath.split("\\");
 				//console.log(splitArr[splitArr.length -1]);
+				console.log("IMAGE", event.target.value);
 				setFormData({
 					...formData,
 					image: event.target.value,
@@ -91,7 +94,7 @@ export default function CreatePokemon() {
 				</select>
 				<br/>
 				<label htmlFor="img">Image:</label>
-				<select>
+				<select type="img" name="img" id="img" onChange={handleChange}>
 					<option disabled selected hidden >Choose an Image</option>
 					{images.map((image) =>(
 						<option>{image}</option>

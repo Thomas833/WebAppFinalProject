@@ -42,14 +42,15 @@ export default function PokemonList() {
       marginBottom: "5px"
     }
   };
-
+  console.log("IMAGE NAME", list[list.length - 1].image);
   return (
     <div style={pageStyle.body}>
       <h2 style={pageStyle.h2}>List of Pokemon:</h2>
+
       {list.map((pokemon) => (
         <article style={pageStyle.article} key={pokemon._id}>
           <Link to={`/showPokemonList/${pokemon._id}`} style={pageStyle.link}><h1 style={pageStyle.h1}>{pokemon.name}</h1></Link>
-          <img src={`/images/${pokemon.image}`} style={pageStyle.img} alt={pokemon.name} />
+          <img src={require(`./images/${pokemon.image}`)} style={pageStyle.img} alt={pokemon.name} />
           <p style={pageStyle.p}>Type: {pokemon.type}</p>
           <p style={pageStyle.p}>Wins: {pokemon.wins}</p>
         </article>

@@ -45,7 +45,7 @@ export default function BattlePokemon() {
           playerId: event.target[1].id,
           opponentId: pokemon._id,
         });
-        break;  
+        break;
       default:
         return;
     }
