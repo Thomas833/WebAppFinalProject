@@ -35,7 +35,7 @@ export default function BattlePokemon() {
   }, []);
 
   const pokemon = useLoaderData();
-  const winningImage = ''
+  let winningImage = ''
 
   const handleChange = (event) => {
     const name = event.target.name;
