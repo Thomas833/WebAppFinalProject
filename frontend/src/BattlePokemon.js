@@ -39,7 +39,8 @@ export default function BattlePokemon() {
 
   const handleChange = (event) => {
     const name = event.target.name;
-     winningImage = event.target.image; // maybe different?
+    console.log(event.target.name);
+     winningImage = event.target.name; // maybe different?
     switch (name) {
       case 'battleName':
         setFormData({
@@ -59,20 +60,17 @@ export default function BattlePokemon() {
     event.preventDefault();
     const winOutcome = Math.round(Math.random());
     const firstPokemon = formData.battleName.split(" ")[0];
+    const split_poke = formData.battleName.split(" ");
     const battlers = [firstPokemon, pokemon.name];
 
-    if (winOutcome == 1){
-      setFormData({
-        ...formData,
-        winImage: pokemon.image,
-      });
-    }
-    else{
-      setFormData({
-        ...formData,
-        winImage: winningImage,
-      });
-    }
+    const battlerImages = [split_poke[split_poke.length - 1], pokemon.image];
+    // console.log(split_poke[split_poke.length - 1], "here", pokemon.image);
+    setFormData({
+      ...formData,
+      winImage: battlerImages[winOutcome],
+    });
+
+
     fetch(`${BASE_URL}/battlePokemon`, {
       method: "POST",
       headers: {
@@ -154,7 +152,7 @@ export default function BattlePokemon() {
           <select style={pageStyle.select} type="type" name="battleName" id="type" onChange={handleChange}>
             <option disabled hidden selected>Choose an option</option>
             {allPokemon.map((poke) => (
-              <option key={poke._id} id={poke._id} value={`${poke.name} vs ${pokemon.name}`} name={poke.image}>{poke.name}</option>
+              <option key={poke._id} id={poke._id} value={`${poke.name} vs ${pokemon.name} ${pokemon.image}`} name={poke.image}>{poke.name}</option>
             ))}
           </select>
           <button style={pageStyle.button} type="submit">Battle</button>

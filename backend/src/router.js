@@ -76,7 +76,13 @@ BackendRouter.post("/battlePokemon", async (req,res) =>{
 	return res.json(result.insertedId);
 });
 
-BackendRouter.get("/battlePokemon/:battleId", async (req, res) => {
+BackendRouter.get("/battlePokemon/:battleId/win", async (req, res) => {
+	const db = req.app.get("db");
+	const result = await db.collection("battles").findOne({_id: new ObjectId(req.params.battleId)});
+	return res.json(result);
+});
+
+BackendRouter.get("/battlePokemon/:battleId/lose", async (req, res) => {
 	const db = req.app.get("db");
 	const result = await db.collection("battles").findOne({_id: new ObjectId(req.params.battleId)});
 	return res.json(result);
